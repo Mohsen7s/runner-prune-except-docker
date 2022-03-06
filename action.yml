@@ -32,8 +32,9 @@ runs:
     - name: Free up & login to docker
       shell: bash
       run: |
+          
+          (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; exit 0; fi)
           set -euo pipefail
-          (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; exit 0; fi) || echo true
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           
           
