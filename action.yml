@@ -31,6 +31,7 @@ runs:
   steps:
     - name: Check if image exist on duckerhub
       id: check-image
+      shell: bash
       run: |
           docker manifest inspect ${{ inputs.step-image-name }} > /dev/null;
           echo "::set-output name=IMAGE_EXIST::$?"
