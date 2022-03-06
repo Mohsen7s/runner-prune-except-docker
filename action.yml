@@ -18,6 +18,11 @@ inputs:
   use-image-name:
     description: ''
     required: true
+  
+  run-command:
+    description: ''
+    required: true
+    
 
 
   
@@ -32,9 +37,15 @@ runs:
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           
           #move to end later
+          
+          cat >> bscript.sh << EOF
+          ${{ run-command }}
+          rm /home/bscript.sh 
+          EOF
+          
           docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
           docker cp bscript.sh tbb:/home/
-          #docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
+          docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
           docker commit tbb ${{ inputs.step-image-name }}
           docker push ${{ inputs.step-image-name }}
           
