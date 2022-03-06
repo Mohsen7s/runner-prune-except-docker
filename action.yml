@@ -39,7 +39,7 @@ runs:
           #move to end later
           
           cat >> bscript.sh << EOF
-          ${{ run-command }}
+          ${{ inputs.run-command }}
           rm /home/bscript.sh 
           EOF
           
