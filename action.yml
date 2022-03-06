@@ -93,10 +93,7 @@ runs:
           docker cp bscript.sh tbb:/home/
           docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
           docker commit tbb ${{ inputs.step-image-name }}
-          echo "test5"
-
           docker push ${{ inputs.step-image-name }}
-          echo "test6"
 
 #    - name: Final report
 #      shell: bash
