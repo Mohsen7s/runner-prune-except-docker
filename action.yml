@@ -86,7 +86,7 @@ runs:
           cd
           cat >> bscript.sh << EOF
           ${{ inputs.run-command }}
-          rm /home/bscript.sh 
+          sudo rm /home/bscript.sh 
           EOF
 
           docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
