@@ -33,7 +33,7 @@ runs:
       id: check-image
       shell: bash
       run: |
-          docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; echo "::set-output name=IMAGE_EXIST::$?"
+          (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; echo "::set-output name=IMAGE_EXIST::$?") || echo true
 
     - name: Free up & login to docker
       if: ${{ false == steps.check-image.outputs.IMAGE_EXIST == 0 }}
