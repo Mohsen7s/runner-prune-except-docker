@@ -82,18 +82,17 @@ runs:
           sudo chown -R runner "${BUILD_MOUNT_PATH}"
           sudo chgrp -R runner "${BUILD_MOUNT_PATH}"
           
-          echo "where am i"
-          pwd
-          cat >> bscript.sh << EOF
+          
+          sudo cat >> bscript.sh << EOF
           ${{ inputs.run-command }}
           rm /home/bscript.sh 
           EOF
           
-          docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
-          docker cp bscript.sh tbb:/home/
-          docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
-          docker commit tbb ${{ inputs.step-image-name }}
-          docker push ${{ inputs.step-image-name }}
+          sudo docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
+          sudo docker cp bscript.sh tbb:/home/
+          sudo docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
+          sudo docker commit tbb ${{ inputs.step-image-name }}
+          sudo docker push ${{ inputs.step-image-name }}
 #    - name: Final report
 #      shell: bash
 #      run: |
