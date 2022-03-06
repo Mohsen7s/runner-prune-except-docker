@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: |
           set -euo pipefail
-          docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; exit 0; fi
+          (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; exit 0; fi) || echo true
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           
           BUILD_MOUNT_PATH="${GITHUB_WORKSPACE}"
