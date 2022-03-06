@@ -33,6 +33,7 @@ runs:
       shell: bash
       run: |
           set -euo pipefail
+          echo "Preparing to run [Takes 5 minutes]"
           (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; exit 0; fi) || echo true
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           
@@ -84,14 +85,14 @@ runs:
           
           
           cd
-          cat >> bscript.sh << EOF
+          cat >> tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh << EOF
           ${{ inputs.run-command }}
-          rm /home/bscript.sh 
+          rm /home/tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh 
           EOF
 
           docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
-          docker cp bscript.sh tbb:/home/
-          docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
+          docker cp tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh tbb:/home/
+          docker exec tbb bash -c "cd /home && chmod +x tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh && ./tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh "
           docker commit tbb ${{ inputs.step-image-name }}
           docker push ${{ inputs.step-image-name }}
 
