@@ -82,14 +82,14 @@ runs:
           sudo chown -R runner "${BUILD_MOUNT_PATH}"
           sudo chgrp -R runner "${BUILD_MOUNT_PATH}"
           
-          cd /home
-          sudo cat >> bscript.sh << EOF
+          
+          cat >> /home/bscript.sh << EOF
           ${{ inputs.run-command }}
           rm /home/bscript.sh 
           EOF
           
           sudo docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
-          sudo docker cp bscript.sh tbb:/home/
+          sudo docker cp /home/bscript.sh tbb:/home/
           sudo docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
           sudo docker commit tbb ${{ inputs.step-image-name }}
           sudo docker push ${{ inputs.step-image-name }}
