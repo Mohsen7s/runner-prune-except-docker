@@ -33,7 +33,7 @@ runs:
       shell: bash
       run: |
           
-          (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; set -euo pipefail; exit 0; fi)
+          (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then exit 0; echo "Already exist on DockerHub "; set -euo pipefail; exit 0; fi)
           set -euo pipefail
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           
