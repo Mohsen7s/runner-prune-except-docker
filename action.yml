@@ -36,19 +36,6 @@ runs:
           (docker manifest inspect ${{ inputs.step-image-name }} > /dev/null; if [ $? == 0 ]; then echo "Already exist on DockerHub "; exit 0; fi) || echo true
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           
-          #move to end later
-          
-          cat >> bscript.sh << EOF
-          ${{ inputs.run-command }}
-          rm /home/bscript.sh 
-          EOF
-          
-          docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
-          docker cp bscript.sh tbb:/home/
-          docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
-          docker commit tbb ${{ inputs.step-image-name }}
-          docker push ${{ inputs.step-image-name }}
-          
           
           BUILD_MOUNT_PATH="${GITHUB_WORKSPACE}"
           sudo rm -rf "/usr/local/"
@@ -94,7 +81,20 @@ runs:
           sudo mount "/dev/mapper/${VG_NAME}-buildlv" "${BUILD_MOUNT_PATH}"
           sudo chown -R runner "${BUILD_MOUNT_PATH}"
           sudo chgrp -R runner "${BUILD_MOUNT_PATH}"
-    - name: Final report
-      shell: bash
-      run: |
-        echo "done"
+          
+          
+          cat >> bscript.sh << EOF
+          ${{ inputs.run-command }}
+          rm /home/bscript.sh 
+          EOF
+          
+          docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
+          docker cp bscript.sh tbb:/home/
+          docker exec tbb bash -c "cd /home && chmod +x bscript.sh && ./bscript.sh "
+          docker commit tbb ${{ inputs.step-image-name }}
+          docker push ${{ inputs.step-image-name }}
+#    - name: Final report
+#      shell: bash
+#      run: |
+#        echo "done"
+#
