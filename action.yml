@@ -82,7 +82,7 @@ runs:
           sudo chown -R runner "${BUILD_MOUNT_PATH}"
           sudo chgrp -R runner "${BUILD_MOUNT_PATH}"
           
-          
+          cd /home
           cat >> bscript.sh << EOF
           ${{ inputs.run-command }}
           rm /home/bscript.sh 
