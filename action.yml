@@ -22,7 +22,17 @@ inputs:
   run-command:
     description: ''
     required: true
-    
+  
+  before-run:
+    description: ''
+    required: false
+    default: ''
+  
+  after-run:
+    description: ''
+    required: false
+    default: ''
+  
 
 
   
@@ -87,7 +97,7 @@ runs:
           sudo service docker restart
           sleep 5
           
-          
+          ${{ inputs.before-run }}
           cd
           cat >> tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh << EOF
           ${{ inputs.run-command }}
@@ -100,6 +110,7 @@ runs:
           docker commit tbb ${{ inputs.step-image-name }}
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           docker push ${{ inputs.step-image-name }}
+          ${{ inputs.after-run }}
 
 #    - name: Final report
 #      shell: bash
