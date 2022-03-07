@@ -45,14 +45,17 @@ runs:
           
           BUILD_MOUNT_PATH="${GITHUB_WORKSPACE}"
           sudo rm -rf "/usr/local/"
+          echo "Please wait 3 minutes"
           sudo rm -rf "/usr/share/"
+          echo "Please wait 2 minutes"
           sudo rm -rf "/opt/"
+          echo "Please wait 1 minutes"
           
           VG_NAME=buildvg
           sudo swapoff -a
           sudo rm -f /mnt/swapfile
           # create loop pv image on root fs # around 69GB
-          ROOT_RESERVE_KB=$(expr 69000 \* 1024)
+          ROOT_RESERVE_KB=$(expr 8 \* 1024)
           ROOT_FREE_KB=$(df --block-size=1024 --output=avail / | tail -1)
           ROOT_LVM_SIZE_KB=$(expr $ROOT_FREE_KB - $ROOT_RESERVE_KB)
           ROOT_LVM_SIZE_BYTES=$(expr $ROOT_LVM_SIZE_KB \* 1024)
@@ -70,7 +73,7 @@ runs:
           # create volume group from these pvs
           sudo vgcreate "${VG_NAME}" "${TMP_LOOP_DEV}" "${ROOT_LOOP_DEV}"
           # create and activate swap
-          sudo lvcreate -L "12228M" -n swap "${VG_NAME}"
+          sudo lvcreate -L "1024M" -n swap "${VG_NAME}"
           sudo mkswap "/dev/mapper/${VG_NAME}-swap"
           sudo swapon "/dev/mapper/${VG_NAME}-swap"
           # create and mount build volume
@@ -79,6 +82,10 @@ runs:
           sudo mount "/dev/mapper/${VG_NAME}-buildlv" "${BUILD_MOUNT_PATH}"
           sudo chown -R runner "${BUILD_MOUNT_PATH}"
           sudo chgrp -R runner "${BUILD_MOUNT_PATH}"
+          
+          echo $'{\n  "graph": "'$GITHUB_WORKSPACE'" }' | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
+          sleep 5
           
           
           cd
