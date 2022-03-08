@@ -99,10 +99,10 @@ runs:
           
           ${{ inputs.before-run }}
           cd
-          cat >> tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh << EOF
+          cat >> tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh << TEMPSCRIPTFILEEOF
           ${{ inputs.run-command }}
           rm /home/tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh 
-          EOF
+          TEMPSCRIPTFILEEOF
 
           docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
           docker cp tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh tbb:/home/
