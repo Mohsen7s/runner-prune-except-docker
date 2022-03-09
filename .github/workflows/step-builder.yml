@@ -31,6 +31,7 @@ on:
         type: string
       
       step1-command:
+        type: string
         required: true
       
       
@@ -51,6 +52,7 @@ on:
       
       step2-command:
         required: false
+        type: string
         default: ''
         
         
