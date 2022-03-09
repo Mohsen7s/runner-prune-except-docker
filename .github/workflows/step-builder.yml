@@ -1,0 +1,76 @@
+name: runner-prunner as a step builder
+
+on:
+  workflow_call:
+    inputs:
+      docker-username:
+        required: true
+        type: string
+        
+      docker-password:
+        required: true
+        type: string
+        
+      step1-name: 
+        required: false
+        type: string
+        default: ''
+        
+      step1-using-image:
+        required: true
+        type: string
+      
+      step1-build-image:
+        required: true
+        type: string
+      
+      step1-command:
+        required: true
+      
+      
+      step2-name: 
+        required: false
+        type: string
+        default: ''
+        
+      step2-using-image:
+        required: false
+        type: string
+        default: ''
+      
+      step2-build-image:
+        required: false
+        type: string
+        default: ''
+      
+      step2-command:
+        required: false
+        default: ''
+        
+jobs:
+  step1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ${{ step1-name }}
+        uses: ./runner-prune-except-docker@main
+        with:
+          docker-username: ${{ inputs.docker-username }}
+          docker-password: ${{ inputs.docker-password }}
+          use-image-name: ${{ inputs.step1-using-image }}
+          step-image-name: ${{ inputs.step1-build-image }}
+          run-command: ${{ inputs.step1-command }}
+          
+  step2:
+    runs-on: ubuntu-latest
+    if: ${{ false == inputs.step2-using-image == '' && false == inputs.step2-build-image == '' && false == inputs.step2-command == '' }}
+    needs: step1
+    steps:
+      - name: ${{ step2-name }}
+        uses: ./runner-prune-except-docker@main
+        with:
+          docker-username: ${{ inputs.docker-username }}
+          docker-password: ${{ inputs.docker-password }}
+          use-image-name: ${{ inputs.step2-using-image }}
+          step-image-name: ${{ inputs.step2-build-image }}
+          run-command: ${{ inputs.step2-command }}          
+            
