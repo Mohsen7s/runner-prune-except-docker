@@ -9,13 +9,6 @@ on:
         required: true
 
     inputs:
-      docker-username:
-        required: true
-        type: string
-        
-      docker-password:
-        required: true
-        type: string
         
       step1-name: 
         required: false
