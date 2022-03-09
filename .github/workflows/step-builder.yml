@@ -53,6 +53,7 @@ jobs:
   step1:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: ${{ inputs.step1-name }}
         uses: ./runner-prune-except-docker@main
         with:
@@ -67,6 +68,7 @@ jobs:
     if: ${{ false == inputs.step2-using-image == '' && false == inputs.step2-build-image == '' && false == inputs.step2-command == '' }}
     needs: step1
     steps:
+      - uses: actions/checkout@v3
       - name: ${{ inputs.step2-name }}
         uses: ./runner-prune-except-docker@main
         with:
