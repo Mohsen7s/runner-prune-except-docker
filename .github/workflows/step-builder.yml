@@ -54,8 +54,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+
       - name: ${{ inputs.step1-name }}
-        uses: ./runner-prune-except-docker@main
+        uses: mohsen7s/runner-prune-except-docker@main
         with:
           docker-username: ${{ secrets.docker-username }}
           docker-password: ${{ secrets.docker-password }}
@@ -70,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: ${{ inputs.step2-name }}
-        uses: ./runner-prune-except-docker@main
+        uses: mohsen7s/runner-prune-except-docker@main
         with:
           docker-username: ${{ secrets.docker-username }}
           docker-password: ${{ secrets.docker-password }}
