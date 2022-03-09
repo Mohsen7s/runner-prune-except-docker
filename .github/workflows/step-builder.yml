@@ -2,6 +2,12 @@ name: runner-prunner as a step builder
 
 on:
   workflow_call:
+    secrets:
+      docker-username:
+        required: true
+      docker-password:
+        required: true
+
     inputs:
       docker-username:
         required: true
@@ -47,6 +53,7 @@ on:
         required: false
         default: ''
         
+        
 jobs:
   step1:
     runs-on: ubuntu-latest
@@ -54,8 +61,8 @@ jobs:
       - name: ${{ step1-name }}
         uses: ./runner-prune-except-docker@main
         with:
-          docker-username: ${{ inputs.docker-username }}
-          docker-password: ${{ inputs.docker-password }}
+          docker-username: ${{ secrets.docker-username }}
+          docker-password: ${{ secrets.docker-password }}
           use-image-name: ${{ inputs.step1-using-image }}
           step-image-name: ${{ inputs.step1-build-image }}
           run-command: ${{ inputs.step1-command }}
@@ -68,8 +75,8 @@ jobs:
       - name: ${{ step2-name }}
         uses: ./runner-prune-except-docker@main
         with:
-          docker-username: ${{ inputs.docker-username }}
-          docker-password: ${{ inputs.docker-password }}
+          docker-username: ${{ secrets.docker-username }}
+          docker-password: ${{ secrets.docker-password }}
           use-image-name: ${{ inputs.step2-using-image }}
           step-image-name: ${{ inputs.step2-build-image }}
           run-command: ${{ inputs.step2-command }}          
