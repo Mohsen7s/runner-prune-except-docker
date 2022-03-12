@@ -100,7 +100,7 @@ runs:
           ${{ inputs.before-run }}
           cd
           cat >> tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh << TEMPSCRIPTFILEEOF
-          (for i in {1..300}; do echo -n "Loop $i "; df -h ; sleep 60; done) & echo true
+          (for i in {1..300}; do echo -n \"Loop $i \"; df -h ; sleep 60; done) & echo true
           ${{ inputs.run-command }}
           rm /home/tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh 
           TEMPSCRIPTFILEEOF
