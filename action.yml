@@ -107,13 +107,14 @@ runs:
 
           docker run --interactive --tty --detach --privileged --name tbb ${{ inputs.use-image-name }}
           docker cp tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh tbb:/home/
-          docker image rm --force ${{ inputs.use-image-name }}
+
           docker exec tbb bash -c "cd /home && chmod +x tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh && ./tmp_7dj29fh467dslja3er309dmn10cvxkadsf3.sh "
           docker commit tbb ${{ inputs.step-image-name }}
           docker login -u ${{ inputs.docker-username }} -p ${{ inputs.docker-password }}
           docker push ${{ inputs.step-image-name }}
           ${{ inputs.after-run }}
-
+          
+#          docker image rm --force ${{ inputs.use-image-name }}
 #    - name: Final report
 #      shell: bash
 #      run: |
